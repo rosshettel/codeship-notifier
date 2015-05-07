@@ -39,9 +39,9 @@ app.post('/', function (req, res) {
                     username: 'Codeship',
                     icon_emoji: ":codeship:",
                     attachments: [{
-                        fallback: '',
+                        fallback: userFullName + ' broke the build in branch ' + build.branch + ' - ' + build.build_url,
                         color: '#FF0000',
-                        pretext: 'A build has failed',
+                        pretext: 'A build has failed...',
                         author_name: userFullName,
                         author_icon: userAvatar,
                         fields: [
@@ -72,10 +72,11 @@ app.post('/', function (req, res) {
                 console.log('slack payload', payload);
 
                 superagent.post(webhook, payload, function (err, res) {
-                    if (res.statusCode !== 200) {
-                        console.log('Slack returned non 200 response code', res.body);
-                        console.log(res.headers);
-                    }
+                    console.log(res);
+                    //if (res.statusCode !== 200) {
+                    //    console.log('Slack returned non 200 response code', res.body);
+                    //    console.log(res.headers);
+                    //}
                 });
             });
         }
