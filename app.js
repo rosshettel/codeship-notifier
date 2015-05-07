@@ -27,8 +27,9 @@ app.post('/', function (req, res) {
         if (true) {
             //todo - check if we want to post this branch's error
 
-            superagent.get('http://api.github.com/users/' + build.committer)
+            superagent.get('https://api.github.com/users/' + build.committer)
                 .end(function (err, res) {
+                    console.log('url', 'https://api.github.com/users/' + build.committer);
                     console.log('err', err);
                     console.log('res', res);
                     if (res && res.status !== 200) {
