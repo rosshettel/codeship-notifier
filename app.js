@@ -5,7 +5,14 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     superagent = require('superagent'),
     webhook = process.env.webhook,
-    port = process.env.PORT || 3000;
+    port = process.env.PORT || 3000,
+    messages = [
+        'Avast ye harties! A build has busted!',
+        'Shiver me timbers, someone broke the build!',
+        'Ahoy me maties! Some salty dog broke the build!',
+        'Arrrgh, I oughta make the land lubber that broke this build walk the plank!',
+        'Ayyye, some scallywag has seen fit to break the build!'
+    ];
 
 app.use(bodyParser.json());
 
@@ -45,14 +52,10 @@ app.post('/', function (req, res) {
                         attachments: [{
                             fallback: userFullName + ' broke the build in branch ' + build.branch + ' - ' + build.build_url,
                             color: '#FF0000',
-                            pretext: 'A build has failed...',
+                            pretext: messages[Math.floor(Math.random() * messages.length)],
                             author_name: userFullName,
                             author_icon: userAvatar,
                             fields: [
-                                {
-                                    title: 'Commit Message',
-                                    value: build.message
-                                },
                                 {
                                     title: 'Branch',
                                     value: '<https://github.com/' + build.project_full_name + '/tree/' + build.branch + '|' + build.branch + '>',
@@ -67,8 +70,12 @@ app.post('/', function (req, res) {
                                     title: 'Build',
                                     value: '<' + build.build_url + '|' + build.build_id + '>',
                                     short: true
+                                },
+                                {
+                                    title: 'Commit Message',
+                                    value: build.message,
+                                    short: true
                                 }
-
                             ]
                         }]
                     };
