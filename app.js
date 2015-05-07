@@ -26,59 +26,62 @@ app.post('/', function (req, res) {
         if (build.status === 'error') {
             //todo - check if we want to post this branch's error
 
-            superagent.get('http://api.github.com/users/' + build.committer, function (err, res) {
-                if (res.status !== 200) {
-                    userAvatar = 'http://placegoat.com/16';
-                    userFullName = build.committer;
-                } else {
-                    userAvatar = res.body.avatar_url;
-                    userFullName = res.body.name;
-                }
-
-                payload = {
-                    username: 'Codeship',
-                    icon_emoji: ":codeship:",
-                    attachments: [{
-                        fallback: userFullName + ' broke the build in branch ' + build.branch + ' - ' + build.build_url,
-                        color: '#FF0000',
-                        pretext: 'A build has failed...',
-                        author_name: userFullName,
-                        author_icon: userAvatar,
-                        fields: [
-                            {
-                                title: 'Commit Message',
-                                value: build.message
-                            },
-                            {
-                                title: 'Branch',
-                                value: '<https://github.com/' + build.project_full_name + '/tree/' + build.branch + '|' + build.branch + '>',
-                                short: true
-                            },
-                            {
-                                title: 'Commit',
-                                value: '<' + build.commit_url + '|' + build.short_commit_id + '>',
-                                short: true
-                            },
-                            {
-                                title: 'Build',
-                                value: '<' + build.build_url + '|' + build.build_id + '>',
-                                short: true
-                            }
-
-                        ]
-                    }]
-                };
-
-                console.log('slack payload', payload);
-
-                superagent.post(webhook, payload, function (err, res) {
-                    console.log(res);
+            superagent.get('http://api.github.com/users/' + build.committer)
+                .end(function (err, res) {
                     if (res.status !== 200) {
-                        console.log('Slack returned non 200 response code', res.body);
-                        console.log(res.headers);
+                        userAvatar = 'http://placegoat.com/16';
+                        userFullName = build.committer;
+                    } else {
+                        userAvatar = res.body.avatar_url;
+                        userFullName = res.body.name;
                     }
+
+                    payload = {
+                        username: 'Codeship',
+                        icon_emoji: ":codeship:",
+                        attachments: [{
+                            fallback: userFullName + ' broke the build in branch ' + build.branch + ' - ' + build.build_url,
+                            color: '#FF0000',
+                            pretext: 'A build has failed...',
+                            author_name: userFullName,
+                            author_icon: userAvatar,
+                            fields: [
+                                {
+                                    title: 'Commit Message',
+                                    value: build.message
+                                },
+                                {
+                                    title: 'Branch',
+                                    value: '<https://github.com/' + build.project_full_name + '/tree/' + build.branch + '|' + build.branch + '>',
+                                    short: true
+                                },
+                                {
+                                    title: 'Commit',
+                                    value: '<' + build.commit_url + '|' + build.short_commit_id + '>',
+                                    short: true
+                                },
+                                {
+                                    title: 'Build',
+                                    value: '<' + build.build_url + '|' + build.build_id + '>',
+                                    short: true
+                                }
+
+                            ]
+                        }]
+                    };
+
+                    console.log('slack payload', payload);
+
+                    superagent.post(webhook)
+                        .send(payload)
+                        .end(function (err, res) {
+                            console.log(res);
+                            if (res.status !== 200) {
+                                console.log('Slack returned non 200 response code', res.body);
+                                console.log(res.headers);
+                            }
+                        });
                 });
-            });
         }
     }
 
