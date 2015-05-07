@@ -24,6 +24,7 @@ app.get('/', function (req, res) {
 function buildShouldBePosted(build) {
     var ret = false;
     if (build.status === 'error') {
+        console.log('error build', build);
         ret = true;
     }
 
@@ -38,7 +39,7 @@ app.post('/', function (req, res) {
 
     if (req.body && req.body.build) {
         build = req.body.build;
-        console.log('received webhook', build);
+        console.log('received webhook', build.status);
 
         if (buildShouldBePosted(build)) {
             superagent.get('https://api.github.com/users/' + build.committer)
@@ -85,6 +86,8 @@ app.post('/', function (req, res) {
                             ]
                         }]
                     };
+
+                    console.log('payload', payload);
 
                     superagent.post(webhook)
                         .send(payload)
