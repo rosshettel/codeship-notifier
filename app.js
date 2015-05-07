@@ -30,8 +30,6 @@ app.post('/', function (req, res) {
             superagent.get('https://api.github.com/users/' + build.committer)
                 .end(function (err, res) {
                     console.log('url', 'https://api.github.com/users/' + build.committer);
-                    console.log('err', err);
-                    console.log('res', res);
                     if (res && res.status !== 200) {
                         userAvatar = 'http://placegoat.com/16';
                         userFullName = build.committer;
@@ -43,6 +41,7 @@ app.post('/', function (req, res) {
                     payload = {
                         username: 'Codeship',
                         icon_emoji: ":codeship:",
+                        channel: '#testing',
                         attachments: [{
                             fallback: userFullName + ' broke the build in branch ' + build.branch + ' - ' + build.build_url,
                             color: '#FF0000',
