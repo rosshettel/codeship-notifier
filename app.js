@@ -78,7 +78,6 @@ app.post('/', function (req, res) {
                     superagent.post(webhook)
                         .send(payload)
                         .end(function (err, res) {
-                            console.log(res);
                             if (res.status !== 200) {
                                 console.log('Slack returned non 200 response code', res.body);
                                 console.log(res.headers);
