@@ -29,8 +29,9 @@ app.post('/', function (req, res) {
 
             superagent.get('http://api.github.com/users/' + build.committer)
                 .end(function (err, res) {
-                    console.log(res);
-                    if (res.status !== 200) {
+                    console.log('err', err);
+                    console.log('res', res);
+                    if (res && res.status !== 200) {
                         userAvatar = 'http://placegoat.com/16';
                         userFullName = build.committer;
                     } else {
