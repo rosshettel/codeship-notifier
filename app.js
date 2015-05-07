@@ -27,7 +27,7 @@ app.post('/', function (req, res) {
             //todo - check if we want to post this branch's error
 
             superagent.get('http://api.github.com/users/' + build.committer, function (err, res) {
-                if (res.statusCode !== 200) {
+                if (res.status !== 200) {
                     userAvatar = 'http://placegoat.com/16';
                     userFullName = build.committer;
                 } else {
@@ -73,10 +73,10 @@ app.post('/', function (req, res) {
 
                 superagent.post(webhook, payload, function (err, res) {
                     console.log(res);
-                    //if (res.statusCode !== 200) {
-                    //    console.log('Slack returned non 200 response code', res.body);
-                    //    console.log(res.headers);
-                    //}
+                    if (res.status !== 200) {
+                        console.log('Slack returned non 200 response code', res.body);
+                        console.log(res.headers);
+                    }
                 });
             });
         }
