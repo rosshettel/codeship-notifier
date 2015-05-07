@@ -23,7 +23,8 @@ app.post('/', function (req, res) {
         build = req.body.build;
         console.log('received webhook', build);
 
-        if (build.status === 'error') {
+        //if (build.status === 'error') {
+        if (true) {
             //todo - check if we want to post this branch's error
 
             superagent.get('http://api.github.com/users/' + build.committer)
