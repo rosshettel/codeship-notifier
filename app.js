@@ -35,6 +35,7 @@ app.post('/', function (req, res) {
     var build,
         userAvatar,
         userFullName,
+        commitMsg,
         payload;
 
     if (req.body && req.body.build) {
@@ -51,6 +52,12 @@ app.post('/', function (req, res) {
                     } else {
                         userAvatar = res.body.avatar_url;
                         userFullName = res.body.name;
+                    }
+
+                    if (build.message.length > 100) {
+                        commitMsg = build.message.substr(0, 100) + '...';
+                    } else {
+                        commitMsg = build.message;
                     }
 
                     payload = {
@@ -80,7 +87,7 @@ app.post('/', function (req, res) {
                                 },
                                 {
                                     title: 'Commit Message',
-                                    value: build.message,
+                                    value: commitMsg,
                                     short: true
                                 }
                             ]
