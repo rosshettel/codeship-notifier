@@ -190,9 +190,6 @@ function postToSlack(payload) {
             if (err) {
                 console.log('Slack webhook error', err);
             }
-            if (!res.body.ok) {
-                console.log('Slack webhook error', res.body.error);
-            }
             log('slack response', res.body);
         });
 }
