@@ -83,7 +83,8 @@ function resolveSlackUsername(params, callback) {
 
     function resolveManually(githubUsername) {
         var usernameList = {
-            'katrina-fooda': 'katrina'
+            'katrina-fooda': 'katrina',
+            'sudha88': 'sudha'
         };
 
         return usernameList[githubUsername];
