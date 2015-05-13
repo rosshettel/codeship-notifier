@@ -214,6 +214,14 @@ app.post('/', function (req, res) {
                         DMPayload = buildPayload(build, githubInfo, slackUsername);
                         log('DM payload', DMPayload);
                         postToSlack(DMPayload);
+                    } else {
+                        console.log("Notifying @ross we couldn't resolve slack username");
+                        postToSlack({
+                            username: 'Codeship',
+                            icon_url: "https://slack.global.ssl.fastly.net/7bf4/img/services/codeship_48.png",
+                            channel: '@ross',
+                            text: "Yarrr, I couldn't find this scallywag's slack username: " + githubInfo.login
+                        });
                     }
 
                     channelPayload = buildPayload(build, githubInfo);
