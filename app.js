@@ -87,7 +87,8 @@ function resolveSlackUsername(params, callback) {
             'katrina-fooda': 'katrina',
             'sudha88': 'sudha',
             'roberthan1992': 'roberthan',
-            'sergeihabel': 'sergeihabel'
+            'sergeihabel': 'sergeihabel',
+            'jliwanag77': 'jliwanag77'
         };
 
         return usernameList[githubUsername];
