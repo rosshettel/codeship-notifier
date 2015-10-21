@@ -41,12 +41,18 @@ function getGithubUserInfo(build, callback) {
 
     superagent.get(githubUserUrl)
         .end(function (err, res) {
+            if (err) {
+                console.log('Error getting github info', err);
+            }
+
             log('github user info', res.body);
             if (res && res.status === 200) {
                 data.avatarUrl = res.body.avatar_url;
                 data.fullName = res.body.name;
                 data.email = res.body.email;
                 data.login = res.body.login;
+            } else {
+                console.log('Non 200 status from github!', res.status);
             }
             callback(null, data);
         });
